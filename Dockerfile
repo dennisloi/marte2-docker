@@ -50,21 +50,22 @@ RUN git clone https://github.com/aneto0/MARTe2.git /opt/MARTe2
 RUN git clone https://vcis-gitlab.f4e.europa.eu/aneto/MARTe2-components.git /opt/MARTe2-components
 
 # Download EPICS
-RUN git clone -b R7.0.2 --recursive https://github.com/epics-base/epics-base.git epics-base-7.0.2 /opt/EPICS
-RUN cd /opt/EPICS
-RUN echo "OP_SYS_CXXFLAGS += -std=c++11" >> configure/os/CONFIG_SITE.linux-x86_64.Common
-RUN make
+RUN mkdir /opt/EPICS &&\
+   cd /opt/EPICS &&\
+   wget https://epics-controls.org/download/base/base-7.0.10.tar.gz &&\
+   tar -xvf base-7.0.10.tar.gz &&\
+   mv base-7.0.10 epics-base &&\
+   rm base-7.0.10.tar.gz &&\
+   cd epics-base &&\
+   make
 
 # Download open62541 library
-RUN git clone -b 0.3 https://github.com/open62541/open62541.git /opt.open62541
-
-# Download open62541 library
-RUN git clone -b 0.3 https://github.com/open62541/open62541.git /opt/open62541
+#RUN git clone https://github.com/open62541/open62541.git /opt/open62541
 # Building open62541 library
-RUN mkdir /opt/open62541/build
-RUN cd /opt/open62541/build
-RUN cmake ..
-RUN make
+#RUN mkdir /opt/open62541/build && \
+#    cd /opt/open62541/build && \
+#    cmake .. && \
+#    make
 
 
 
@@ -75,6 +76,6 @@ RUN make -f Makefile.linux
 # Environment
 ENV MARTe2_DIR=/opt/MARTe2
 ENV MARTe2_Components_DIR=/opt/MARTe2-components
-ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_DIR/Build/x86-linux/Core/
+ENV LD_LIBRARY_PATH=$MARTe2_DIR/Build/x86-linux/Core/
 
 WORKDIR /workspace

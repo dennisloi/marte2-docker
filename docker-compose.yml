@@ -1,0 +1,16 @@
+services:
+  marte2:
+    image: dennisloi/marte2_docker:latest
+    container_name: marte2
+   #environment:
+   #  - DISPLAY=${DISPLAY}
+    volumes:
+      # X11 connection stuff
+     #- /tmp/.X11-unix:/tmp/.X11-unix
+
+      # Path to the external projects
+      - ${WORKSPACE_PATH}:/workspace
+
+    stdin_open: true
+    tty: true
+    command: bash
